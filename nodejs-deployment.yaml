@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+  namespace: ivolve
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:
+      tolerations:
+      - key: "node"
+        operator: "Equal"
+        value: "worker"
+        effect: "NoSchedule"
+
+      containers:
+      - name: nodejs
+        image: zakyaakram52/node-appk8s:ivolve
+        ports:
+        - containerPort: 3000
+
+        envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: app-secret
+
+        volumeMounts:
+        - name: app-logs
+          mountPath: /app/logs
+
+      volumes:
+      - name: app-logs
+        persistentVolumeClaim:
+          claimName: app-pvc
