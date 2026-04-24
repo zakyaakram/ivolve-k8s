@@ -48,6 +48,7 @@ K8S LABS/
 ├── node-exporter.yaml
 
 ```
+---
 #🏗️ Architecture Diagram
 ---
 
