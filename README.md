@@ -51,12 +51,13 @@ K8S LABS/
 #🏗️ Architecture Diagram
 ---
 
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/3f1aeef8-9273-4079-8c68-163e8dcaede1" />
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/a09227cd-a6f9-4c7a-bcc7-74c72fd26dd7" />
+
 
 
 ---
 
-# 🧪 Labs Breakdown
+# 🧪 project Breakdown
 
 ## 🔹 Docker & Compose
 
