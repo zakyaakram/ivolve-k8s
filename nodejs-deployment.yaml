@@ -8,10 +8,12 @@ spec:
   selector:
     matchLabels:
       app: nodejs
+
   template:
     metadata:
       labels:
         app: nodejs
+
     spec:
       tolerations:
       - key: "node"
@@ -22,50 +24,6 @@ spec:
       initContainers:
       - name: db-init
         image: mysql:5.7
-        env:
-        - name: DB_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: app-config        # changed from mysql-config
-              key: DB_HOST
-        - name: DB_USER
-          valueFrom:
-            configMapKeyRef:
-              name: app-config        # changed
-              key: DB_USER
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: app-secret        # changed from mysql-secret
-              key: DB_PASSWORD
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: app-secret        # changed
-              key: MYSQL_ROOT_PASSWORD
-        command:
-        - sh
-        - -c
-        - |
-          echo "Waiting for MySQL..."
-          until mysqladmin ping -h $DB_HOST -u root -p$MYSQL_ROOT_PASSWORD --silent; do
-            sleep 2
-          done
-          echo "Creating database and user safely..."
-          mysql -h $DB_HOST -u root -p$MYSQL_ROOT_PASSWORD -e "
-          CREATE DATABASE IF NOT EXISTS ivolve; 
-          DROP USER IF EXISTS '$DB_USER'@'%';
-          DROP USER IF EXISTS '$DB_USER'@'localhost';
-          CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
-          GRANT ALL PRIVILEGES ON ivolve.* TO '$DB_USER'@'%';
-          FLUSH PRIVILEGES;
-          "
-
-      containers:
-      - name: nodejs
-        image: zakyaakram52/node-appk8s:ivolve
-        ports:
-        - containerPort: 3000
         env:
         - name: DB_HOST
           valueFrom:
@@ -82,6 +40,62 @@ spec:
             secretKeyRef:
               name: app-secret
               key: DB_PASSWORD
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: MYSQL_ROOT_PASSWORD
+
+        command:
+        - sh
+        - -c
+        - |
+          echo "Waiting for MySQL..."
+          until mysqladmin ping -h $DB_HOST -u root -p$MYSQL_ROOT_PASSWORD --silent; do
+            sleep 2
+          done
+
+          echo "Creating database and user safely..."
+          mysql -h $DB_HOST -u root -p$MYSQL_ROOT_PASSWORD -e "
+          CREATE DATABASE IF NOT EXISTS ivolve;
+          DROP USER IF EXISTS '$DB_USER'@'%';
+          DROP USER IF EXISTS '$DB_USER'@'localhost';
+          CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
+          GRANT ALL PRIVILEGES ON ivolve.* TO '$DB_USER'@'%';
+          FLUSH PRIVILEGES;
+          "
+
+      containers:
+      - name: nodejs
+        image: zakyaakram52/node-appk8s:ivolve
+        ports:
+        - containerPort: 3000
+
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_HOST
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: DB_PASSWORD
+
+        resources:
+          requests:
+            cpu: "1"
+            memory: "1Gi"
+          limits:
+            cpu: "2"
+            memory: "2Gi"
+
         volumeMounts:
         - name: app-logs
           mountPath: /usr/src/app/logs
@@ -89,4 +103,4 @@ spec:
       volumes:
       - name: app-logs
         persistentVolumeClaim:
-          claimName: app-pvc          # changed from app-logs-pvc 
+          claimName: app-pvc
