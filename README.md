@@ -46,13 +46,12 @@ K8S LABS/
 ├── quota.yaml
 ├── network-policy.yaml
 ├── node-exporter.yaml
+
 ```
 #🏗️ Architecture Diagram
-
+```
 
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/3f1aeef8-9273-4079-8c68-163e8dcaede1" />
-
-
 
 
 ---
