@@ -49,7 +49,7 @@ K8S LABS/
 
 ```
 #🏗️ Architecture Diagram
-```
+---
 
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/3f1aeef8-9273-4079-8c68-163e8dcaede1" />
 
@@ -58,7 +58,7 @@ K8S LABS/
 
 # 🧪 Labs Breakdown
 
-## 🔹 Lab 10–12: Docker & Compose
+## 🔹 Docker & Compose
 
 * Built Node.js application image
 * Created Dockerfile
@@ -70,7 +70,7 @@ K8S LABS/
 
 ---
 
-## 🔹 Lab 13–14: Kubernetes Basics
+## 🔹Kubernetes Basics
 
 * Created Kubernetes cluster using Minikube
 * Deployed Node.js app using:
@@ -81,7 +81,7 @@ K8S LABS/
 
 ---
 
-## 🔹 Lab 15: Multi-tier App Deployment
+## 🔹  Multi-tier App Deployment
 
 * Connected Node.js app to MySQL inside Kubernetes
 * Tested service-to-service communication
@@ -89,7 +89,7 @@ K8S LABS/
 
 ---
 
-## 🔹 Lab 16: Init Containers & Database Setup
+## 🔹 Init Containers & Database Setup
 
 * Added Init Container to:
 
@@ -102,7 +102,7 @@ K8S LABS/
 
 ---
 
-## 🔹 Lab 17: Resource Management
+## 🔹 Resource Management
 
 * Added CPU & Memory:
 
@@ -117,7 +117,7 @@ K8S LABS/
 
 ---
 
-## 🔹 Lab 18: Network Policy (Security)
+## 🔹  Network Policy (Security)
 
 * Created NetworkPolicy:
 
@@ -127,7 +127,7 @@ K8S LABS/
 
 ---
 
-## 🔹 Lab 19: Monitoring with DaemonSet
+## 🔹 Monitoring with DaemonSet
 
 * Created `monitoring` namespace
 * Deployed Node Exporter using DaemonSet
@@ -217,10 +217,8 @@ http://localhost:9100/metrics
 # 👩‍💻 Author
 
 **Zakya Akram**
-DevOps & Cloud Enthusiast
+
 
 ---
 
-# ⭐ If you found this helpful
 
-Give this repo a star ⭐
