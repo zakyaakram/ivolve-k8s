@@ -49,7 +49,7 @@ K8S LABS/
 
 ```
 ---
-#🏗️ Architecture Diagram
+🏗️ Architecture Diagram 
 ---
 
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/07c58e90-d98b-42c9-b4b4-2a348905e412" />
