@@ -4,6 +4,6 @@ metadata:
   name: app-config
   namespace: ivolve
 data:
-  DB_HOST: mysql-service
+  DB_HOST: mysql  #-service
   DB_USER: root
   

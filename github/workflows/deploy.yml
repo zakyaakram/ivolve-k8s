@@ -1,0 +1,43 @@
+name: Deploy to K8s
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: Configure Kubeconfig
+      run: |
+        mkdir -p ~/.kube
+        cat <<EOF > ~/.kube/config
+        apiVersion: v1
+        kind: Config
+        clusters:
+        - cluster:
+            certificate-authority-data: ${{ secrets.KUBE_CA }}
+            server: ${{ secrets.KUBE_SERVER }}
+          name: cluster
+        contexts:
+        - context:
+            cluster: cluster
+            user: github
+          name: context
+        current-context: context
+        users:
+        - name: github
+          user:
+            token: ${{ secrets.KUBE_TOKEN }}
+        EOF
+
+    - name: Test access
+      run: |
+        kubectl get pods -n ivolve
