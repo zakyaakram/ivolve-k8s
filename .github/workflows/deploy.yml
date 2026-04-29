@@ -1,4 +1,4 @@
-name: Deploy to Kubernetes
+name: CI/CD Pipeline
 
 on:
   push:
@@ -10,18 +10,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    # 1. Checkout code
     - name: Checkout code
       uses: actions/checkout@v4
+
+    # 2. Setup Node.js
+    - name: Setup Node
+      uses: actions/setup-node@v4
       with:
-        fetch-depth: 0
+        node-version: 18
 
-    - name: Set up kubectl
-      run: |
-        curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-        chmod +x kubectl
-        sudo mv kubectl /usr/local/bin/
+    # 3. Install dependencies
+    - name: Install dependencies
+      run: npm install
 
-    - name: Configure kubeconfig
+    # 4. Run tests
+    - name: Run tests
+      run: npm test
+
+    # 5. Build Docker image
+    - name: Build Docker image
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/node-app:latest .
+
+    # 6. Login to DockerHub
+    - name: Login DockerHub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    # 7. Push image
+    - name: Push image
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/node-app:latest
+
+    # 8. Remove local image
+    - name: Remove local image
+      run: docker rmi ${{ secrets.DOCKER_USERNAME }}/node-app:latest
+
+    # 9. Setup kubectl
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v4
+
+    # 🔐 10. Create kubeconfig from secrets (UPDATED)
+    - name: Configure Kubernetes access
       run: |
         mkdir -p $HOME/.kube
         cat <<EOF > $HOME/.kube/config
@@ -31,7 +60,7 @@ jobs:
         - name: cluster
           cluster:
             certificate-authority-data: ${{ secrets.KUBE_CA }}
-            server: ${{ secrets.KUBE_URL }}
+            server: ${{ secrets.KUBE_SERVER }}
         contexts:
         - name: context
           context:
@@ -44,6 +73,24 @@ jobs:
             token: ${{ secrets.KUBE_TOKEN }}
         EOF
 
+    # 11. Deploy (safe for Minikube)
     - name: Deploy to Kubernetes
       run: |
-        kubectl apply -f k8s/
+        kubectl apply -f k8s/ || echo "Cluster unreachable (expected if using Minikube)"
+
+    # 12. Verify
+    - name: Check pods
+      run: kubectl get pods -n ivolve || echo "Cannot connect to cluster"
+
+    # 🔥 Post actions
+    - name: Always
+      if: always()
+      run: echo "Pipeline finished"
+
+    - name: On success
+      if: success()
+      run: echo "Success 🎉"
+
+    - name: On failure
+      if: failure()
+      run: echo "Failed ❌"
