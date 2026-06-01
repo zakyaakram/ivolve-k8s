@@ -1,10 +1,10 @@
-# 🚀 Kubernetes End-to-End Project (Docker → K8s → Monitoring)
+#  Kubernetes End-to-End Project (Docker → K8s → Monitoring)
 
 This project demonstrates a complete journey from containerization to Kubernetes orchestration, covering real-world DevOps concepts including deployments, storage, networking, security, and monitoring.
 
 ---
 
-# 📌 Project Overview
+#  Project Overview
 
 The application is a **Node.js app with MySQL database**, deployed step-by-step through multiple labs:
 
@@ -19,7 +19,7 @@ The application is a **Node.js app with MySQL database**, deployed step-by-step 
 
 ---
 
-# 🧱 Tech Stack
+#  Tech Stack
 
 * Docker & Docker Compose
 * Kubernetes (Minikube)
@@ -29,7 +29,7 @@ The application is a **Node.js app with MySQL database**, deployed step-by-step 
 
 ---
 
-# 📂 Project Structure
+#  Project Structure
 
 ```
 K8S LABS/
@@ -49,7 +49,7 @@ K8S LABS/
 
 ```
 ---
-🏗️ Architecture Diagram 
+ Architecture Diagram 
 ---
 
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/07c58e90-d98b-42c9-b4b4-2a348905e412" />
@@ -59,7 +59,7 @@ K8S LABS/
 
 ---
 
-# 🧪 project Breakdown
+#  project Breakdown
 
 ## 🔹 Docker & Compose
 
@@ -141,7 +141,7 @@ K8S LABS/
 
 ---
 
-# 🔐 Key Concepts Covered
+#  Key Concepts Covered
 
 * Kubernetes Deployments & Services
 * StatefulSets
@@ -155,7 +155,7 @@ K8S LABS/
 
 ---
 
-# 🧪 How to Run
+#  How to Run
 
 ### 1. Start Minikube
 
@@ -177,7 +177,7 @@ kubectl get pods -A
 
 ---
 
-# 📊 Monitoring Access
+#  Monitoring Access
 
 To check Node Exporter metrics:
 
@@ -193,7 +193,7 @@ http://localhost:9100/metrics
 
 ---
 
-# ⚠️ Challenges Faced
+#  Challenges Faced
 
 * PVC stuck in Terminating state
 * MySQL permission issues inside init containers
@@ -203,7 +203,7 @@ http://localhost:9100/metrics
 
 ---
 
-# 💡 Lessons Learned
+#  Lessons Learned
 
 * Kubernetes is state-sensitive (especially with storage)
 * Service naming is critical for internal communication
